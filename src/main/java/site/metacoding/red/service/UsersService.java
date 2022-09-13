@@ -20,11 +20,7 @@ public class UsersService {
 
 	public void 회원가입(JoinDto joinDto) { // username, password, email
 		// 1.Dto를 Entity로 변경하는 코드
-		System.out.println("되니?");
 		Users users = joinDto.toEntity();
-		System.out.println("===============");
-		System.out.println(joinDto.getUsername());
-		System.out.println("===============");
 		// 2. Entity로 DB 수행
 		usersDao.insert(users);
 	}

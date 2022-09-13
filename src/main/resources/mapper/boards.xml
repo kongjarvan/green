@@ -4,10 +4,70 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.metacoding.red.domain.boards.BoardsDao">
 
+	<select id="paging"
+		resultType="site.metacoding.red.web.dto.response.boards.PagingDto">
+		SELECT totalCount,
+		a.totalPage,
+		a.currentPage,
+		CASE when a.currentPage = 0 then
+		'true' ELSE 'false' end as first,
+		CASE when a.currentPage = totalPage-1
+		then 'true' ELSE 'false' end as last
+		FROM
+		(select count(*) totalCount,
+		ceiling(count(*)/3) totalPage,
+		#{page} currentPage,
+		0 first, 0 last
+		FROM
+		boards
+		<if test="keyword != null">
+			WHERE title like '%'||#{keyword}||'%'
+		</if>
+		) a
+	</select>
+
+
+	<select id="findById"
+		resultType="site.metacoding.red.domain.boards.Boards">
+		SELECT title, content, usersId, id
+		FROM boards
+		WHERE id=#{id}
+	</select>
+
+
+	<select id="findAll"
+		resultType="site.metacoding.red.web.dto.response.boards.MainDto">
+		SELECT *
+		FROM boards b
+		INNER JOIN
+		users u
+		ON
+		b.usersId = u.id
+		<if test="keyword != null">
+			WHERE title like '%'||#{keyword}||'%'
+		</if>
+		ORDER BY b.id DESC
+		OFFSET #{startNum} ROWS
+		FETCH NEXT 3 ROWS ONLY
+	</select>
+
+
+	<update id="update">
+		UPDATE boards SET title = #{title}, content =
+		#{content} WHERE id = #{id}
+	</update>
+
+
+	<delete id="delete">
+		DELETE FROM boards WHERE id=#{id}
+	</delete>
+
+
 	<update id="updateByUsersId">
 		UPDATE boards
 		SET usersId = NULL
-		WHERE usersId = #{usersId}
+		WHERE usersId =
+		#{usersId}
 	</update>
 
 
