@@ -5,12 +5,11 @@
 <mapper namespace="site.metacoding.red.domain.users.UsersDao">
 
 	<insert id="insert">
-		INSERT INTO users(username, password, email,
-		createdAt)
-		VALUES(#{username}, #{password}, #{email}, NOW())
+		insert into users(username, password, email, createdAt)
+		values(#{username}, #{password}, #{email}, NOW())
 	</insert>
-	
-		<select id="findAll"
+
+	<select id="findAll"
 		resultType="site.metacoding.red.domain.users.Users">
 		SELECT * FROM users ORDER BY id DESC
 	</select>

@@ -14,7 +14,7 @@ public class Script {
 	public static String href(String url) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<script>");
-		sb.append("locatiuon.href='"+url+"';");
+		sb.append("location.href='"+url+"';");
 		sb.append("</script>");
 		return sb.toString();
 	}
@@ -23,7 +23,7 @@ public class Script {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<script>");
 		sb.append("alert('"+msg+"');");
-		sb.append("locatiuon.href='"+url+"';");
+		sb.append("location.href='"+url+"';");
 		sb.append("</script>");
 		return sb.toString();
 	}
