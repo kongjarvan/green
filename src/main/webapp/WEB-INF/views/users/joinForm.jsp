@@ -13,6 +13,9 @@
 			<input id="password" type="password" class="form-control" placeholder="Enter password">
 		</div>
 		<div class="mb-3">
+			<input id="checkPassword" type="password" class="form-control" placeholder="Enter password">
+		</div>
+		<div class="mb-3">
 			<input id="email" type="email" class="form-control" placeholder="Enter email">
 		</div>
 		<button id="btnJoin" type="button" class="btn btn-primary">회원가입</button>
@@ -28,12 +31,22 @@
 			alert("아이디 중복체크를 진행해주세요");
 			return; // return; -> 메서드 종료
 		}
+		
+		
 		// 0. 통신 오브젝트 생성
 		let data = {
 				username: $("#username").val(),
-				password: $("#password").val(),
-				email: $("#email").val(),
+				password: $("#password").val(),	
+				checkPassword: $("#checkPassword").val(),
+				email: $("#email").val()
 		}
+			
+		if(data.password != data.checkPassword){
+			alert("입력한 비밀번호가 다릅니다.");
+			return;
+		}
+		
+
 		
 		$.ajax("/join",{
 			type: "POST",
@@ -48,6 +61,8 @@
 			}
 		});
 	});
+	
+	
 
 	// 유저네임 중복체크
 	$("#btnUsernameSameCheck").click(()=>{
@@ -77,6 +92,8 @@
 			}
 		});
 	});
+
+	
 	
 	
 </script>

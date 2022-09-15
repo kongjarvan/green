@@ -51,7 +51,7 @@
 		</ul>
 	</div>
 
-<%-- 	<div style="background-color: 'grey';">
+<%-- <div style="background-color: 'grey';">
 		<h3>blockCount : ${pagingDto.blockCount}</h3>
 		<h3>currentBlock : ${pagingDto.currentBlock}</h3>
 		<h3>startPageNum : ${pagingDto.startPageNum}</h3>
