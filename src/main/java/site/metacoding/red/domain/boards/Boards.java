@@ -15,15 +15,15 @@ public class Boards {
 	private String title;
 	private String content;
 	private Integer usersId;
-	private Timestamp createdAt; // At 시분초 다 표현할때, Dt 년월일
+	private Timestamp createdAt; // At 시분초 다 표현할때, Dt 년원일
 	
-	public Boards(String title, String content) {
+	public Boards(String title, String content, Integer usersId) {
 		this.title = title;
 		this.content = content;
+		this.usersId = usersId;
 	}
 	
-	
-	public void 글수정(UpdateDto updateDto) {
+	public void update(UpdateDto updateDto) {
 		this.title = updateDto.getTitle();
 		this.content = updateDto.getContent();
 	}

@@ -56,7 +56,7 @@ public class UsersApiController {
    // localhost:8000/api/users/usernameSameCheck?username=?
    @GetMapping("/api/users/usernameSameCheck")
    public String usernameSameCheck(String username) {
-      boolean isSame = usersService.아이디중복확인(username);
+      boolean isSame = usersService.유저네임중복확인(username);
       if(isSame) {
          return "유저네임이 중복되었어요";
       }else {

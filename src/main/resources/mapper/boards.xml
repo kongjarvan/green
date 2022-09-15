@@ -10,9 +10,9 @@
 		a.totalPage,
 		a.currentPage,
 		CASE when a.currentPage = 0 then
-		'true' ELSE 'false' end as first,
+		1 ELSE 0 end as first,
 		CASE when a.currentPage = totalPage-1
-		then 'true' ELSE 'false' end as last
+		then 1 ELSE 0 end as last
 		FROM
 		(select count(*) totalCount,
 		ceiling(count(*)/3) totalPage,
@@ -21,7 +21,7 @@
 		FROM
 		boards
 		<if test="keyword != null">
-			WHERE title like '%'||#{keyword}||'%'
+			WHERE title like CONCAT('%',#{keyword},'%')
 		</if>
 		) a
 	</select>
@@ -44,12 +44,20 @@
 		ON
 		b.usersId = u.id
 		<if test="keyword != null">
-			WHERE title like '%'||#{keyword}||'%'
+			WHERE title like CONCAT('%',#{keyword},'%')
 		</if>
 		ORDER BY b.id DESC
 		OFFSET #{startNum} ROWS
 		FETCH NEXT 3 ROWS ONLY
 	</select>
+	
+	
+		<insert id="insert">
+		INSERT INTO boards (title, content, usersId,
+		createdAt)
+		VALUES(#{title}, #{content}, #{usersId},
+		NOW())
+	</insert>
 
 
 	<update id="update">

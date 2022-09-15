@@ -20,20 +20,18 @@ public class BoardsService {
 	private final HttpSession session;
 	private final BoardsDao boardsDao;
 
-	public PagingDto 게시글목록보기(Integer page, String keyword) {
+	public PagingDto 게시글목록보기(Integer page, String keyword) {		
 		if (page == null) {
-			page = 0; // 한줄짜리는 중괄호 필요 없음
+			page = 0;
 		}
 		int startNum = page * 3;
-
 		List<MainDto> boardsList = boardsDao.findAll(startNum, keyword);
 		PagingDto pagingDto = boardsDao.paging(page, keyword);
-
-		if (boardsList.size()==0) pagingDto.setNotResult(true);
-	
+		if (boardsList.size() == 0)
+			pagingDto.setNotResult(true);
 		pagingDto.makeBlockInfo(keyword);
 		pagingDto.setMainDtos(boardsList);
-		
+
 		return pagingDto;
 
 	}
@@ -44,7 +42,7 @@ public class BoardsService {
 
 	public void 게시글수정하기(Integer id, UpdateDto updateDto) {
 		Boards boardsPS = boardsDao.findById(id);
-		boardsPS.글수정(updateDto);
+		boardsPS.update(updateDto);
 		boardsDao.update(boardsPS);
 	}
 

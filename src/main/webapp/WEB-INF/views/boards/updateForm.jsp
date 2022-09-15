@@ -3,7 +3,7 @@
 <%@ include file="../layout/header.jsp"%>
 
 <div class="container">
-	<form action="/boards/${boards.id}/update" method="post">
+	<form action="/boards/${boards.id}" method="post">
 		<div class="mb-3 mt-3">
 			<input type="text" class="form-control" placeholder="Enter title" name="title" value="${boards.title}" required="이 입력란을 작성하세요" maxlength="50">
 		</div>

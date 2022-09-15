@@ -27,6 +27,10 @@ public class UsersService {
 
 	public Users 로그인(LoginDto loginDto) { // username, password
 		Users usersPS = usersDao.findByUsername(loginDto.getUsername());
+		
+		if (usersPS==null) {
+			return null;
+		}
 
 		// if로 usersPS의 password와 Dto password 비교
 		if (usersPS.getPassword().equals(loginDto.getPassword())) {
@@ -36,13 +40,15 @@ public class UsersService {
 		}
 	}
 
-	public void 회원수정(Integer id, UpdateDto updateDto) { // id, Dto(password, email)
+	public Users 회원수정(Integer id, UpdateDto updateDto) { // id, Dto(password, email)
 		// 1. 영속화
 		Users usersPS = usersDao.findById(id);
 		// 2. 영속화 된 객체 변경
 		usersPS.update(updateDto);
 		// 3. DB 수행
 		usersDao.update(usersPS);
+		
+		return usersPS;
 	}
 
 	@Transactional(rollbackFor = RuntimeException.class) // 해당 메서드의 트랜젝션을 하나로 묶어줌, 하나라도 정상처리가 안되면 롤백
@@ -51,7 +57,7 @@ public class UsersService {
 		boardsDao.updateByUsersId(id); // 해당 회원이 적은 글을 모두 찾아서 usersId를 null로 업데이트(); forEach
 	} // users - delete, boards - update
 
-	public boolean 아이디중복확인(String username) {
+	public boolean 유저네임중복확인(String username) {
 		Users usersPS = usersDao.findByUsername(username);
 		// username이 있으면 true, 없으면 false 리턴
 

@@ -4,16 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import site.metacoding.red.domain.boards.Boards;
 
-@Getter
 @Setter
+@Getter
 public class WriteDto {
-
 	private String title;
 	private String content;
 	
 	public Boards toEntity(Integer usersId) {
-		Boards boards = new Boards(this.title, this.content);
+		Boards boards = new Boards(this.title, this.content, usersId);
 		return boards;
 	}
-
 }
