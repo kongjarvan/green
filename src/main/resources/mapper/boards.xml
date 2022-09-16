@@ -9,10 +9,12 @@
 		SELECT totalCount,
 		a.totalPage,
 		a.currentPage,
-		CASE when a.currentPage = 0 then
+		CASE when a.currentPage =
+		0 then
 		1 ELSE 0 end as first,
 		CASE when a.currentPage = totalPage-1
-		then 1 ELSE 0 end as last
+		then
+		1 ELSE 0 end as last
 		FROM
 		(select count(*) totalCount,
 		ceiling(count(*)/3) totalPage,
@@ -37,9 +39,10 @@
 
 	<select id="findAll"
 		resultType="site.metacoding.red.web.dto.response.boards.MainDto">
-		SELECT *
+		SELECT
+		b.id, b.title, if(u.username is null, '익명', u.username) AS username
 		FROM boards b
-		INNER JOIN
+		LEFT OUTER JOIN
 		users u
 		ON
 		b.usersId = u.id
@@ -50,9 +53,10 @@
 		OFFSET #{startNum} ROWS
 		FETCH NEXT 3 ROWS ONLY
 	</select>
-	
-	
-		<insert id="insert">
+
+
+
+	<insert id="insert">
 		INSERT INTO boards (title, content, usersId,
 		createdAt)
 		VALUES(#{title}, #{content}, #{usersId},

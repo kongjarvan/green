@@ -24,7 +24,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="boards" items="${boardsList}">
+			<c:forEach var="boards" items="${pagingDto.mainDtos}">
 				<tr>
 					<td>${boards.id}</td>
 					<td><a href="/boards/${boards.id}">${boards.title}</a></td>
@@ -41,9 +41,9 @@
 			<li class='page-item ${pagingDto.first ? "disabled" : ""}'><a class="page-link"
 				href="?page=${pagingDto.currentPage-1}&keyword=${pagingDto.keyword}">Prev</a></li>
 
-			<c:forEach var="i" begin="${pagingDto.startPageNum}" end="${pagingDto.lastPageNum}" step="1">
-				<li class='page-item ${pagingDto.currentPage == i-1 ? "active" : ""}'><a class="page-link"
-					href="?page=${i-1 }&keyword=${pagingDto.keyword}">${i }</a></li>
+			<c:forEach var="num" begin="${pagingDto.startPageNum}" end="${pagingDto.lastPageNum}" step="1">
+				<li class='page-item ${pagingDto.currentPage == num-1 ? "active" : ""}'><a class="page-link"
+					href="?page=${num-1 }&keyword=${pagingDto.keyword}">${num}</a></li>
 			</c:forEach>
 
 			<li class='page-item ${pagingDto.last ? "disabled" : ""}'><a class="page-link"
