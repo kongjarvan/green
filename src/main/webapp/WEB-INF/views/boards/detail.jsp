@@ -2,56 +2,99 @@
 
 <%@ include file="../layout/header.jsp"%>
 
+<input id="page" type="hidden" value="${search.currentPage}">
+<input id="keyword" type="hidden" value="${search.keyword}">
 <div class="container">
-	<br /> <br />
+	<br /> <br /> <input id="id" type="hidden" value="${detailDto.boards.id}" />
 
-	<c:if test="${principal.id == boards.usersId}">
-		<div class="d-flex">
-			<input id="keyword" type="hidden" value="${search.keyword}" /> 
-			<input id="page" type="hidden"value="${search.currentPage}" /> 
-			<a href="/boards/${boards.id}/updateForm" class="btn btn-warning">수정하러가기</a>
-			<Form>
-				<input id="id" type="hidden" value="${boards.id}" />
-				<Button id="btnDeleteBoards" type="button" class="btn btn-danger">삭제</Button>
-			</Form>
-		</div>
-	</c:if>
+	<div class="d-flex">
+
+		<a href="/boards/${detailDto.boards.id}/updateForm" class="btn btn-warning">수정하러가기</a>
+
+		<form>
+			<button id="btnDeleteBoards" class="btn btn-danger">삭제</button>
+		</form>
+	</div>
+
 
 	<br />
 	<div class="d-flex justify-content-between">
-		<h3>${boards.title}</h3>
+		<h3>${detailDto.boards.title}</h3>
 		<div>
-			좋아요 수: 10 <i id="iconHeart" class="fa-regular fa-heart"></i>
+			좋아요수 : <span id="countLove">${detailDto.lovesDto.count}</span> <i id="iconLove"
+				class='${detailDto.lovesDto.loved ? "fa-solid" : "fa-regular"} fa-heart my_pointer my_red'></i>
 		</div>
-		<!-- <i class="fa-solid fa-heart"></i> -->
 	</div>
 	<hr />
 
-	<div>${boards.content}</div>
+	<div>${detailDto.boards.content}</div>
 </div>
 
-
 <script src="/js/users.js">
-
-</script>
-
-<script>
-	$("#iconHeart").click((event)=>{
-		let check = $("#iconHeart").hasClass("fa-regular");
-		
-		if(check == true){
-			$("#iconHeart").removeClass("fa-regular");
-			$("#iconHeart").addClass("fa-solid");
-			$("#iconHeart").css("color", "red");
-		}else{
-			$("#iconHeart").removeClass("fa-solid");
-			$("#iconHeart").addClass("fa-regular");
-			$("#iconHeart").css("color", "black");
-		}
-	});
 	
 </script>
 
 
-<%@ include file="../layout/footer.jsp"%>
+<script>
+  
+   // 하트 아이콘을 클릭했을때의 로직
+   $("#iconLove").click(()=>{
+      let isLovedState = $("#iconLove").hasClass("fa-solid");
+      if(isLovedState){
+         deleteLove();
+      }else{
+         insertLove();
+      }
+   });
+   
+   // DB에 insert 요청하기
+   function insertLove(){
+      let id = $("#id").val();
+      
+      $.ajax("/boards/"+id+"/loves", {
+         type: "POST",
+         dataType: "json"
+      }).done((res) => {
+         if (res.code == 1) {
+            renderLoves();
+            let count=$("#countLove").text();            
+            $("#countLove").text(Number(count)+1);
+         }else{
+            alert("좋아요 실패했습니다");
+         }
+      });
+   }
+   
+   // DB에 delete 요청하기
+   function deleteLove(){
+	      let id = $("#id").val();
+	      
+	      $.ajax("/boards/"+id+"/loves", {
+	         type: "DELETE",
+	         dataType: "json"
+	      }).done((res) => {
+	         if (res.code == 1) {
+	            renderLoves();
+	            let count=$("#countLove").text();            
+	            $("#countLove").text(Number(count)-1); // 부분리로딩
+	         }else{
+	            alert("좋아요 실패했습니다");
+	         }
+	      });
+   }
+   
+   // 빨간색 하트 그리기
+   function renderLoves(){
+      $("#iconLove").removeClass("fa-regular");
+      $("#iconLove").addClass("fa-solid");
+   }
+   
+   // 검정색 하트 그리기
+   function renderCancelLoves(){
+      $("#iconLove").removeClass("fa-solid");
+      $("#iconLove").addClass("fa-regular");
+   }
 
+</script>
+
+<%@ include file="../layout/footer.jsp"%>

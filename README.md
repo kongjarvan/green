@@ -42,6 +42,15 @@ create table boards(
     createdAt TIMESTAMP
 );
 
+
+create table loves(
+    id int primary KEY auto_increment,
+    usersId int,
+    BoardsId INT,
+    createdAt TIMESTAMP,
+    UNIQUE uk_loves(usersId, boardsId)
+);
+
 ```
 
 ### 더미데이터 추가
