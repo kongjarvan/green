@@ -1,5 +1,8 @@
 package site.metacoding.red.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 
@@ -31,14 +34,16 @@ public class BoardsController {
 	private final HttpSession session;
 	
 	@PutMapping("/boards/{id}/update")
-	public String Update(@PathVariable Integer id, UpdateDto updateDto) {
+	public @ResponseBody CMRespDto<?> Update(@PathVariable Integer id, @RequestBody UpdateDto updateDto) {
+		session.getAttribute("search");
 		boardsService.게시글수정하기(id, updateDto);
-		return "redirect:/boards/" + id;
+		return new CMRespDto<>(1, "수정 성공", null);
 	}
 	
 	
 	@GetMapping("/boards/{id}/updateForm")
 	public String UpdateForm(@PathVariable Integer id, Model model) {
+		session.getAttribute("search");
 		Boards boardsPS = boardsService.게시글상세보기(id);
 		model.addAttribute("boards", boardsPS);
 		return "boards/updateForm";
@@ -66,7 +71,13 @@ public class BoardsController {
 	@GetMapping({ "/", "/boards" })
 	public String getBoardList(Model model, Integer page, String keyword) {
 		PagingDto pagingDto = boardsService.게시글목록보기(page, keyword);
+		session.setAttribute("search", pagingDto);
 		model.addAttribute("pagingDto", pagingDto);
+		
+		//	Map<String, Object> referer = new HashMap<>();
+		//	referer.put("page", pagingDto.getCurrentPage());
+		//	referer.put("keyword", pagingDto.getKeyword());
+		//	session.setAttribute("referer", referer);
 		return "boards/main";
 	}
 	
@@ -79,8 +90,10 @@ public class BoardsController {
 	
 	
 	@DeleteMapping("boards/{id}/delete")
-	public String deleteById(@PathVariable Integer id) {
-		return "redirect:/";
+	public @ResponseBody CMRespDto<?> deleteById(@PathVariable Integer id) {
+		session.getAttribute("search");
+		boardsService.게시글삭제하기(id);
+		return new CMRespDto<>(1, "삭제 성공", null);
 	}
 	
 	

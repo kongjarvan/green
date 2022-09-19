@@ -14,30 +14,8 @@
 	</form>
 </div>
 
-<script>
-$("#btnWrite").click(()=>{
-	save();
-})
+<script src="/js/users.js">
 
-function save(){
- 	let data = {
- 			title: $("#title").val(),
- 			content: $("#content").val()
- 		};
-
- 		$.ajax("/boards", {
- 			type: "POST",
- 			dataType: "json",
- 			data: JSON.stringify(data),
- 			headers: {
- 				"Content-Type": "application/json; charset=utf-8"
- 			}
- 		}).done((res) => {
- 			if (res.code == 1) {
- 				location.href = "/";
- 			}
-	}); 
-}
 </script>
 
 

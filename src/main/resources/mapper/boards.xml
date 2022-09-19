@@ -17,7 +17,7 @@
 		1 ELSE 0 end as last
 		FROM
 		(select count(*) totalCount,
-		ceiling(count(*)/3) totalPage,
+		ceiling(count(*)/5) totalPage,
 		#{page} currentPage,
 		0 first, 0 last
 		FROM
@@ -51,7 +51,7 @@
 		</if>
 		ORDER BY b.id DESC
 		OFFSET #{startNum} ROWS
-		FETCH NEXT 3 ROWS ONLY
+		FETCH NEXT 5 ROWS ONLY
 	</select>
 
 
@@ -70,7 +70,7 @@
 	</update>
 
 
-	<delete id="delete">
+	<delete id="deleteById">
 		DELETE FROM boards WHERE id=#{id}
 	</delete>
 

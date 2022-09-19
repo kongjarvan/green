@@ -1,9 +1,9 @@
 # MyBatis DB연결 세팅
 
 ### 페이징 갯수 변경법
--boards.xml의 id=paging 부분에 ceiling(count(*)/3) totalPage
--boards.xml의 id=findAll 부분에 FETCH NEXT 3 ROWS ONLY
--BoardsService의 게시글목록보기() 메서드에 int startNum = page * 3;
+- boards.xml의 id=paging 부분에 ceiling(count(*)/3) totalPage
+- boards.xml의 id=findAll 부분에 FETCH NEXT 3 ROWS ONLY
+- BoardsService의 게시글목록보기() 메서드에 int startNum = page * 3;
 
 ### 설정방법
 - MyBatisConfig 파일 필요

@@ -43,7 +43,7 @@
 
 			<c:forEach var="num" begin="${pagingDto.startPageNum}" end="${pagingDto.lastPageNum}" step="1">
 				<li class='page-item ${pagingDto.currentPage == num-1 ? "active" : ""}'><a class="page-link"
-					href="?page=${num-1 }&keyword=${pagingDto.keyword}">${num}</a></li>
+					href="?page=${num-1}&keyword=${pagingDto.keyword}">${num}</a></li>
 			</c:forEach>
 
 			<li class='page-item ${pagingDto.last ? "disabled" : ""}'><a class="page-link"

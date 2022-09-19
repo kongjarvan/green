@@ -8,7 +8,7 @@ let isUsernameSameCheck = false;
 // 회원가입
 $("#btnJoin").click(() => {
 	join();
-	});
+});
 
 
 $("#btnUsernameSameCheck").click(() => {
@@ -31,14 +31,28 @@ $("#btnUpdate").click(() => {
 });
 
 
+$("#btnWrite").click(() => {
+	write();
+})
+
+
+$("#btnUpdateBoards").click(() => {
+	updateBoards();
+})
+
+
+$("#btnDeleteBoards").click(() => {
+	deleteBoards();
+})
+
 //-------------------function---------------------//
 
 
-function join(){
-		let data = {
+function join() {
+	let data = {
 		username: $("#username").val(),
 		password: $("#password").val(),
-		
+
 		email: $("#email").val()
 	}
 	let checkPassword = $("#checkPassword").val();
@@ -65,15 +79,15 @@ function join(){
 }
 
 
-function checkSame(){
-	
+function checkSame() {
+
 	// body 데이터가 없으니 json으로 날릴 필요가 없음 (json은 바디 데이터를 날리는데에 사용)
 
 	// 1. 사용자가 적은 username값 가져오기
 	let username = $("#username").val();
 
 	// 2. Ajax 통신, DB에 해당 username값이 있는지 확인
-	$.ajax(`/users/usernameSameCheck?username=${username}`,{
+	$.ajax(`/users/usernameSameCheck?username=${username}`, {
 		type: "GET", // 디폴트가 get임 (get 할거면 생략해도 된다는 뜻)
 		dataType: "json",
 		async: true // 거의 무조건 true로 둔다고 보면 됨
@@ -94,13 +108,13 @@ function checkSame(){
 
 
 
-function login(){
-		let data = {
+function login() {
+	let data = {
 		username: $("#username").val(),
 		password: $("#password").val(),
 		remember: $("#remember").prop("checked")
 	};
-	
+
 
 	$.ajax("/login", {
 		type: "POST",
@@ -119,10 +133,10 @@ function login(){
 }
 
 
-function resign(){
-		let id = $("#id").val();
+function resign() {
+	let id = $("#id").val();
 
-	$.ajax("/users/" + id, {
+	$.ajax("/users/" + id + "/delete", {
 		type: "DELETE",
 		dataType: "json" // 응답 데이터
 	}).done((res) => {
@@ -136,8 +150,8 @@ function resign(){
 }
 
 
-function update(){
-		let data = {
+function update() {
+	let data = {
 		password: $("#password").val(),
 		email: $("#email").val()
 	};
@@ -156,6 +170,76 @@ function update(){
 			location.reload(); // 새로고침(f5) 과 같은 기능
 		} else {
 			alert("업데이트에 실패하였습니다.");
+		}
+	});
+}
+
+
+function write() {
+	let data = {
+		title: $("#title").val(),
+		content: $("#content").val(),
+
+	};
+
+	$.ajax("/boards", {
+		type: "POST",
+		dataType: "json",
+		data: JSON.stringify(data),
+		headers: {
+			"Content-Type": "application/json; charset=utf-8"
+		}
+	}).done((res) => {
+		if (res.code == 1) {
+			location.href = "/";
+		}
+	});
+}
+
+
+function updateBoards() {
+	let data = {
+		title: $("#title").val(),
+		content: $("#content").val(),
+	};
+	let id = $("#id").val();
+	let keyword = $("#keyword").val();
+	let page = $("#page").val();
+
+
+	$.ajax("/boards/" + id + "/update", {
+		type: "PUT",
+		dataType: "json", // 응답 데이터
+		data: JSON.stringify(data),
+		headers: {
+			"Content-Type": "application/json; charset=utf-8"
+		}
+	}).done((res) => {
+		if (res.code == 1) {
+			alert("게시글 수정 완료");
+			location.href = "/boards/?page=" + page + "&keyword=" + keyword; // 새로고침(f5) 과 같은 기능
+		} else {
+			alert("수정에 실패하였습니다.");
+		}
+	});
+}
+
+
+function deleteBoards() {
+	let id = $("#id").val();
+	let keyword = $("#keyword").val();
+	let page = $("#page").val();
+
+	$.ajax("/boards/" + id + "/delete", {
+		type: "DELETE",
+		dataType: "json" // 응답 데이터
+	}).done((res) => {
+		if (res.code == 1) {
+			alert("삭제 완료");
+			//document.referer로 하는 방법도 있음. 
+			location.href = "/boards/?page=" + page + "&keyword=" + keyword; // 새로고침(f5) 과 같은 기능
+		} else {
+			alert("삭제에 실패하였습니다.");
 		}
 	});
 }
