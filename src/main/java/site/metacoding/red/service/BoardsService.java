@@ -16,7 +16,7 @@ import site.metacoding.red.web.dto.request.boards.WriteDto;
 import site.metacoding.red.web.dto.response.boards.DetailDto;
 import site.metacoding.red.web.dto.response.boards.MainDto;
 import site.metacoding.red.web.dto.response.boards.PagingDto;
-import site.metacoding.red.web.dto.response.loves.LovesDto;
+
 
 @RequiredArgsConstructor
 @Service

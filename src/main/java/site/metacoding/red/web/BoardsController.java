@@ -25,7 +25,6 @@ import site.metacoding.red.web.dto.request.boards.UpdateDto;
 import site.metacoding.red.web.dto.request.boards.WriteDto;
 import site.metacoding.red.web.dto.response.CMRespDto;
 import site.metacoding.red.web.dto.response.boards.PagingDto;
-import site.metacoding.red.web.dto.response.loves.LovesDto;
 
 
 @RequiredArgsConstructor
@@ -35,6 +34,11 @@ public class BoardsController {
 	private final BoardsService boardsService;
 	private final HttpSession session;
 	
+	@DeleteMapping("/boards/{id}/loves/{lovesId}")
+	public @ResponseBody CMRespDto<?> deleteLoves(@PathVariable Integer id, @PathVariable Integer lovesId){
+		boardsService.좋아요취소(lovesId);
+		return new CMRespDto<>(1, "좋아요 취소 성공", null);
+	}
 
 	
 	// 어떤 게시글을 누가 좋아요 했는지?

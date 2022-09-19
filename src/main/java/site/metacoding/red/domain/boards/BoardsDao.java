@@ -17,6 +17,6 @@ public interface BoardsDao {
 	public void deleteById(Integer id);
 	public void updateByUsersId(Integer usersId);
 	public PagingDto paging(@Param("page") Integer page, @Param("keyword") String keyword);
-	public DetailDto findByDetail(@Param("boarsId") Integer boardsId, @Param("principalId") Integer principalId);
+	public DetailDto findByDetail(@Param("boardsId") Integer boardsId, @Param("principalId") Integer principalId);
 }
 	
