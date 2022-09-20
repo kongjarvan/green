@@ -34,53 +34,50 @@ public class BoardsController {
 	private final BoardsService boardsService;
 	private final HttpSession session;
 	
-	@DeleteMapping("/boards/{id}/loves/{lovesId}")
+	// 인증 필요
+	@DeleteMapping("/s/api/boards/{id}/loves/{lovesId}")
 	public @ResponseBody CMRespDto<?> deleteLoves(@PathVariable Integer id, @PathVariable Integer lovesId){
 		boardsService.좋아요취소(lovesId);
 		return new CMRespDto<>(1, "좋아요 취소 성공", null);
 	}
 
-	
+	// 인증 필요
 	// 어떤 게시글을 누가 좋아요 했는지?
-	@PostMapping("/boards/{id}/loves")
+	@PostMapping("/s/api/boards/{id}/loves")
 	public @ResponseBody CMRespDto<?> insertLoves(@PathVariable Integer id){
 		Users principal = (Users) session.getAttribute("principal");
 		Loves loves = new Loves(principal.getId(), id);
 		boardsService.좋아요(loves);
-		return new CMRespDto<>(1, "좋아요 성공", null);
+		return new CMRespDto<>(1, "좋아요 성공", loves);
 	}
 	
-	
-	@PutMapping("/boards/{id}/update")
+	// 인증 필요
+	@PutMapping("/s/api/boards/{id}/update")
 	public @ResponseBody CMRespDto<?> update(@PathVariable Integer id, @RequestBody UpdateDto updateDto) {
 		session.getAttribute("search");
 		boardsService.게시글수정하기(id, updateDto);
 		return new CMRespDto<>(1, "수정 성공", null);
 	}
 	
-	
-	@GetMapping("/boards/{id}/updateForm")
+	// 인증 필요
+	@GetMapping("/s/boards/{id}/updateForm")
 	public String updateForm(@PathVariable Integer id, Model model) {
 		Boards boardsPS = boardsService.게시글수정화면가져오기(id);
 		model.addAttribute("boards", boardsPS);
 		return "boards/updateForm";
 	}
 	
-	
-	@PostMapping("/boards")
+	// 인증 필요
+	@PostMapping("/s/api/boards")
 	public @ResponseBody CMRespDto<?> writeBoard(@RequestBody WriteDto writeDto) {
 		Users principal = (Users) session.getAttribute("principal");
-		boardsService.게시글쓰기(writeDto, principal);		
+		boardsService.게시글쓰기(writeDto, principal);
 		return new CMRespDto<>(1, "글쓰기 성공", null);
 	}
 	
-	
-	@GetMapping("/boards/writeForm")
+	// 인증 필요
+	@GetMapping("/s/boards/writeForm")
 	public String writeForm(WriteDto writeDto) {
-		Users principal = (Users) session.getAttribute("principal");
-		if (principal == null) {
-			return "redirect:/loginForm";
-		}
 		return "boards/writeForm";
 	}
 	
@@ -91,10 +88,10 @@ public class BoardsController {
 		session.setAttribute("search", pagingDto);
 		model.addAttribute("pagingDto", pagingDto);
 		
-		//	Map<String, Object> referer = new HashMap<>();
-		//	referer.put("page", pagingDto.getCurrentPage());
-		//	referer.put("keyword", pagingDto.getKeyword());
-		//	session.setAttribute("search", referer);
+		//	Map<String, Object> referrer = new HashMap<>();
+		//	referrer.put("page", pagingDto.getCurrentPage());
+		//	referrer.put("keyword", pagingDto.getKeyword());
+		//	session.setAttribute("search", referrer);
 		return "boards/main";
 	}
 	
@@ -111,8 +108,8 @@ public class BoardsController {
 		return "boards/detail";
 	}
 	
-	
-	@DeleteMapping("boards/{id}/delete")
+	// 인증 필요
+	@DeleteMapping("/s/api/boards/{id}/delete")
 	public @ResponseBody CMRespDto<?> deleteById(@PathVariable Integer id) {
 		session.getAttribute("search");
 		boardsService.게시글삭제하기(id);

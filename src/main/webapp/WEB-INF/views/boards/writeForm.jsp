@@ -14,7 +14,7 @@
 	</form>
 </div>
 
-<script src="/js/users.js">
+<script src="/js/boards.js">
 
 </script>
 

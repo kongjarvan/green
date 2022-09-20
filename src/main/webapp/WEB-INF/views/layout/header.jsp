@@ -13,7 +13,8 @@
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css"
 	rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+	rel="stylesheet">
 <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -32,9 +33,9 @@
 							<li class="nav-item"><a class="nav-link" href="/joinForm">회원가입</a></li>
 						</c:when>
 						<c:otherwise>
-							<li class="nav-item"><a class="nav-link" href="/boards/writeForm">글쓰기</a></li>
+							<li class="nav-item"><a class="nav-link" href="/s/boards/writeForm">글쓰기</a></li>
+							<li class="nav-item"><a class="nav-link" href="/s/users/${principal.id}">회원정보보기</a></li>
 							<li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
-							<li class="nav-item"><a class="nav-link" href="/users/${principal.id}">회원정보보기</a></li>
 						</c:otherwise>
 					</c:choose>
 				</ul>

@@ -6,18 +6,16 @@
 <input id="keyword" type="hidden" value="${search.keyword}">
 <div class="container">
 	<br /> <br /> 
-	<input id="id" type="hidden" value="${detailDto.id}" />
+	<input id="id" type="hidden" value="${detailDto.id}" /> 
 	<input id="lovesId" type="hidden" value="${detailDto.lovesId}" />
 	<div class="d-flex">
-
-		<a href="/boards/${detailDto.id}/updateForm" class="btn btn-warning">수정하러가기</a>
-
-		<form>
-			<button id="btnDeleteBoards" class="btn btn-danger">삭제</button>
-		</form>
+		<c:if test="${!empty sessionScope.principal}">
+			<a href="/s/boards/${detailDto.id}/updateForm" class="btn btn-warning">수정하러가기</a>
+			<form>
+				<button id="btnDeleteBoards" class="btn btn-danger">삭제</button>
+			</form>
+		</c:if>
 	</div>
-
-
 	<br />
 	<div class="d-flex justify-content-between">
 		<h3>${detailDto.title}</h3>
@@ -31,72 +29,13 @@
 	<div>${detailDto.content}</div>
 </div>
 
-<script src="/js/users.js">
+<script src="/js/boards.js">
 	
 </script>
 
 
 <script>
-  
-   // 하트 아이콘을 클릭했을때의 로직
-   $("#iconLove").click(()=>{
-      let isLovedState = $("#iconLove").hasClass("fa-solid");
-      if(isLovedState){
-         deleteLove();
-      }else{
-         insertLove();
-      }
-   });
-   
-   // DB에 insert 요청하기
-   function insertLove(){
-      let id = $("#id").val();
-      
-      $.ajax("/boards/"+id+"/loves", {
-         type: "POST",
-         dataType: "json"
-      }).done((res) => {
-         if (res.code == 1) {
-            renderLoves();
-            let count=$("#countLove").text();            
-            $("#countLove").text(Number(count)+1);
-         }else{
-            alert("좋아요 실패했습니다");
-         }
-      });
-   }
-   
-   // DB에 delete 요청하기
-   function deleteLove(){
-	      let id = $("#id").val();
-	      let lovesId = $("#lovesId").val();
-	      
- 	      $.ajax("/boards/"+id+"/loves/"+lovesId, {
-	         type: "DELETE",
-	         dataType: "json"
-	      }).done((res) => {
-	         if (res.code == 1) {
-	            renderCancelLoves();
-	            let count=$("#countLove").text();            
-	            $("#countLove").text(Number(count)-1); // 부분리로딩
-	         }else{
-	            alert("좋아요 취소에 실패했습니다");
-	         }
-	      }); 
-   }
-   
-   // 빨간색 하트 그리기
-   function renderLoves(){
-      $("#iconLove").removeClass("fa-regular");
-      $("#iconLove").addClass("fa-solid");
-   }
-   
-   // 검정색 하트 그리기
-   function renderCancelLoves(){
-      $("#iconLove").removeClass("fa-solid");
-      $("#iconLove").addClass("fa-regular");
-   }
-
+	
 </script>
 
 <%@ include file="../layout/footer.jsp"%>

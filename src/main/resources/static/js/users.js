@@ -31,21 +31,11 @@ $("#btnUpdate").click(() => {
 });
 
 
-$("#btnWrite").click(() => {
-	write();
-})
 
-
-$("#btnUpdateBoards").click(() => {
-	updateBoards();
-})
-
-
-$("#btnDeleteBoards").click(() => {
-	deleteBoards();
-})
 
 //-------------------function---------------------//
+
+
 
 
 function join() {
@@ -97,7 +87,7 @@ function checkSame() {
 			if (res.data == false) {
 				alert("중복되는 아이디가 없습니다.");
 				isUsernameSameCheck = true;
-			} else {
+			}else{
 				alert("아이디가 중복됩니다. 다른 아이디를 사용해주십시오.");
 				isUsernameSameCheck = false;
 				$("#username").val("");
@@ -114,8 +104,7 @@ function login() {
 		password: $("#password").val(),
 		remember: $("#remember").prop("checked")
 	};
-
-
+	
 	$.ajax("/login", {
 		type: "POST",
 		dataType: "json", // 응답 데이터
@@ -136,7 +125,7 @@ function login() {
 function resign() {
 	let id = $("#id").val();
 
-	$.ajax("/users/" + id + "/delete", {
+	$.ajax("/s/api/users/" + id + "/delete", {
 		type: "DELETE",
 		dataType: "json" // 응답 데이터
 	}).done((res) => {
@@ -157,7 +146,7 @@ function update() {
 	};
 	let id = $("#id").val();
 
-	$.ajax("/users/" + id, {
+	$.ajax("/s/api/users/" + id, {
 		type: "PUT",
 		dataType: "json", // 응답 데이터
 		data: JSON.stringify(data),
@@ -175,71 +164,3 @@ function update() {
 }
 
 
-function write() {
-	let data = {
-		title: $("#title").val(),
-		content: $("#content").val(),
-
-	};
-
-	$.ajax("/boards", {
-		type: "POST",
-		dataType: "json",
-		data: JSON.stringify(data),
-		headers: {
-			"Content-Type": "application/json; charset=utf-8"
-		}
-	}).done((res) => {
-		if (res.code == 1) {
-			location.href = "/";
-		}
-	});
-}
-
-
-function updateBoards() {
-	let data = {
-		title: $("#title").val(),
-		content: $("#content").val(),
-	};
-	let id = $("#id").val();
-	let keyword = $("#keyword").val();
-	let page = $("#page").val();
-
-
-	$.ajax("/boards/" + id + "/update", {
-		type: "PUT",
-		dataType: "json", // 응답 데이터
-		data: JSON.stringify(data),
-		headers: {
-			"Content-Type": "application/json; charset=utf-8"
-		}
-	}).done((res) => {
-		if (res.code == 1) {
-			alert("게시글 수정 완료");
-			location.href = "/boards/?page=" + page + "&keyword=" + keyword; // 새로고침(f5) 과 같은 기능
-		} else {
-			alert("수정에 실패하였습니다.");
-		}
-	});
-}
-
-
-function deleteBoards() {
-	let id = $("#id").val();
-	let keyword = $("#keyword").val();
-	let page = $("#page").val();
-
-	$.ajax("/boards/" + id + "/delete", {
-		type: "DELETE",
-		dataType: "json" // 응답 데이터
-	}).done((res) => {
-		if (res.code == 1) {
-			alert("삭제 완료");
-			//document.referer로 하는 방법도 있음. 
-			location.href = "/boards/?page=" + page + "&keyword=" + keyword; // 새로고침(f5) 과 같은 기능
-		} else {
-			alert("삭제에 실패하였습니다.");
-		}
-	});
-}
