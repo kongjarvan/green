@@ -47,12 +47,12 @@ function join() {
 	}
 
 
-	if (koreanCheck() == true) {
+/*	if (koreanCheck() == true) {
 		alert("유저네임에 한글이 있으면 안됩니다.")
 		return;
-	}
+	} 
 
-	if (capitalCheck() == false) {
+	if (upperCheck() == false) {
 		alert("유저네임에 대문자가 최소 하나는 있어야 합니다.")
 		return;
 	}
@@ -66,7 +66,7 @@ function join() {
 	if (emailCheck() == false) {
 		alert("이메일을 잘못 입력하셨습니다.")
 		return;
-	}
+	} */
 
 
 	let data = {
@@ -197,18 +197,18 @@ function update() {
 }
 
 function joinValidate(){
-	koreanCheck();
+	// koreanCheck();
 	upperCheck();
 	emailCheck();
 	spaceCheck();
 }
-/*	
+
 	
 	
 
-	 */
+	 
 
-function koreanCheck() {
+/* function koreanCheck() {
 	let username = $("#username").val();
 	let password = $("#password").val();
 	let email = $("#email").val();
@@ -227,7 +227,7 @@ function koreanCheck() {
 	}else {
 		return false;
 	}
-}
+} */
 
 
 function upperCheck() {

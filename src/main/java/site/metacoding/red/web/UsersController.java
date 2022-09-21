@@ -79,7 +79,18 @@ public class UsersController {
 	}
 
 	@PostMapping("/api/login")
-	public @ResponseBody CMRespDto<?> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+	public @ResponseBody CMRespDto<?> login(@RequestBody @Valid LoginDto loginDto, BindingResult bindingResult, HttpServletResponse response) {
+		
+		if(bindingResult.hasErrors()) {
+			System.out.println("에러있음");
+			FieldError fe = bindingResult.getFieldError(); 			
+			throw new MyApiException(fe.getDefaultMessage());
+
+		}else {
+			System.out.println("에러없음");
+		}
+		
+		
 		// responsebody는 데이터를 리턴, 뷰리졸버 안함
 		if (loginDto.isRemember() == true) {
 			Cookie cookie = new Cookie("username", loginDto.getUsername());
@@ -91,6 +102,7 @@ public class UsersController {
 			cookie.setMaxAge(0);
 			response.addCookie(cookie);
 		}
+		
 
 		Users principal = usersService.로그인(loginDto);
 		if (principal == null) {
