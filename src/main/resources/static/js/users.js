@@ -54,7 +54,7 @@ function join() {
 
 
 
-	$.ajax("/join", {
+	$.ajax("/api/join", {
 		type: "POST",
 		dataType: "json",
 		data: JSON.stringify(data),
@@ -77,7 +77,7 @@ function checkSame() {
 	let username = $("#username").val();
 
 	// 2. Ajax 통신, DB에 해당 username값이 있는지 확인
-	$.ajax(`/users/usernameSameCheck?username=${username}`, {
+	$.ajax(`/api/users/usernameSameCheck?username=${username}`, {
 		type: "GET", // 디폴트가 get임 (get 할거면 생략해도 된다는 뜻)
 		dataType: "json",
 		async: true // 거의 무조건 true로 둔다고 보면 됨
@@ -105,7 +105,7 @@ function login() {
 		remember: $("#remember").prop("checked")
 	};
 	
-	$.ajax("/login", {
+	$.ajax("/api/login", {
 		type: "POST",
 		dataType: "json", // 응답 데이터
 		data: JSON.stringify(data),

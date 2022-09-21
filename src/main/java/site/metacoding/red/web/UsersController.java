@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import lombok.RequiredArgsConstructor;
 import site.metacoding.red.domain.users.Users;
 import site.metacoding.red.service.UsersService;
+import site.metacoding.red.service.ex.MyApiException;
 import site.metacoding.red.util.Script;
 import site.metacoding.red.web.dto.request.users.JoinDto;
 import site.metacoding.red.web.dto.request.users.LoginDto;
@@ -33,7 +34,7 @@ public class UsersController {
 	private final HttpSession session;
 
 	// http://localhost:8000/users/usernameSameCheck?username=ssar
-	@GetMapping("/users/usernameSameCheck")
+	@GetMapping("/api/users/usernameSameCheck")
 	public @ResponseBody CMRespDto<Boolean> usernameSameCheck(String username) {
 		boolean isSame = usersService.유저네임중복확인(username);
 		return new CMRespDto<>(1, "성공", isSame);
@@ -59,13 +60,19 @@ public class UsersController {
 		return "users/loginForm";
 	}
 
-	@PostMapping("/join")
+	@PostMapping("/api/join")
 	public @ResponseBody CMRespDto<?> join(@RequestBody JoinDto joinDto) {
+		
+		// 유효성 검사
+		if(joinDto.getUsername().length()>20) {
+			throw new MyApiException("유저네임이 너무 깁니다.");
+		}
+		
 		usersService.회원가입(joinDto);
 		return new CMRespDto<>(1, "회원가입 성공", null);
 	}
 
-	@PostMapping("/login")
+	@PostMapping("/api/login")
 	public @ResponseBody CMRespDto<?> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
 		// responsebody는 데이터를 리턴, 뷰리졸버 안함
 		if (loginDto.isRemember() == true) {

@@ -11,6 +11,7 @@ import site.metacoding.red.domain.loves.Loves;
 import site.metacoding.red.domain.loves.LovesDao;
 import site.metacoding.red.domain.users.Users;
 import site.metacoding.red.domain.users.UsersDao;
+import site.metacoding.red.service.ex.MyException;
 import site.metacoding.red.web.dto.request.boards.UpdateDto;
 import site.metacoding.red.web.dto.request.boards.WriteDto;
 import site.metacoding.red.web.dto.response.boards.DetailDto;
@@ -61,12 +62,23 @@ public class BoardsService {
 
 	
 	public Boards 게시글수정화면가져오기(Integer id) {
-		return boardsDao.findById(id);
+		
+		Boards boards = boardsDao.findById(id);
+		
+		if(boards == null) {
+			throw new MyException(id+"의 게시글을 찾을 수 없습니다.");
+		}
+			
+		return boards;
 	}
 	
 
 	public void 게시글수정하기(Integer id, UpdateDto updateDto) {
 		Boards boardsPS = boardsDao.findById(id);
+		
+		if(boardsPS == null) {
+			throw new RuntimeException(id+"를 찾을 수 없습니다.");
+		}
 		boardsPS.update(updateDto);
 		boardsDao.update(boardsPS);
 	}
