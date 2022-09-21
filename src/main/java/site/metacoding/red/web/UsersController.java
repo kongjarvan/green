@@ -1,13 +1,16 @@
 package site.metacoding.red.web;
 
+
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.springframework.dao.IncorrectUpdateSemanticsDataAccessException;
+import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import lombok.RequiredArgsConstructor;
 import site.metacoding.red.domain.users.Users;
 import site.metacoding.red.service.UsersService;
 import site.metacoding.red.service.ex.MyApiException;
-import site.metacoding.red.util.Script;
 import site.metacoding.red.web.dto.request.users.JoinDto;
 import site.metacoding.red.web.dto.request.users.LoginDto;
 import site.metacoding.red.web.dto.request.users.UpdateDto;
@@ -48,8 +49,8 @@ public class UsersController {
 	@GetMapping("/loginForm")
 	public String loginForm(Model model, HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
-		for(Cookie cookie : cookies) {
-			if(cookie.getName().equals("username")) {
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals("username")) {
 				model.addAttribute(cookie.getName(), cookie.getValue());
 			}
 			System.out.println("===========");
@@ -61,11 +62,16 @@ public class UsersController {
 	}
 
 	@PostMapping("/api/join")
-	public @ResponseBody CMRespDto<?> join(@RequestBody JoinDto joinDto) {
+	public @ResponseBody CMRespDto<?> join(@RequestBody @Valid JoinDto joinDto, BindingResult bindingResult) { 
+		// @valid 매개변수 바로 옆에 Binding... 있어야 됨, 중간에 다른 매개변수 들어가면 터짐(Model model 같은거 중간에 넣지말것)
 		
-		// 유효성 검사
-		if(joinDto.getUsername().length()>20) {
-			throw new MyApiException("유저네임이 너무 깁니다.");
+		if(bindingResult.hasErrors()) {
+			System.out.println("에러있음");
+			FieldError fe = bindingResult.getFieldError(); 			
+			throw new MyApiException(fe.getDefaultMessage());
+
+		}else {
+			System.out.println("에러없음");
 		}
 		
 		usersService.회원가입(joinDto);
@@ -117,7 +123,6 @@ public class UsersController {
 		session.invalidate();
 		return new CMRespDto<>(1, "회원탈퇴 성공", null);
 	}
-
 
 	@GetMapping("/logout")
 	public String logout() {

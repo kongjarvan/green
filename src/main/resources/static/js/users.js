@@ -7,6 +7,7 @@ let isUsernameSameCheck = false;
 
 // 회원가입
 $("#btnJoin").click(() => {
+	joinValidate();
 	join();
 });
 
@@ -39,6 +40,35 @@ $("#btnUpdate").click(() => {
 
 
 function join() {
+
+	if (isUsernameSameCheck == false) {
+		alert("유저네임 중복체크를 해주세요")
+		return;
+	}
+
+
+	if (koreanCheck() == true) {
+		alert("유저네임에 한글이 있으면 안됩니다.")
+		return;
+	}
+
+	if (capitalCheck() == false) {
+		alert("유저네임에 대문자가 최소 하나는 있어야 합니다.")
+		return;
+	}
+
+	if (spaceCheck() == true) {
+		alert("공백은 입력 할 수 없습니다.")
+		return;
+	}
+
+
+	if (emailCheck() == false) {
+		alert("이메일을 잘못 입력하셨습니다.")
+		return;
+	}
+
+
 	let data = {
 		username: $("#username").val(),
 		password: $("#password").val(),
@@ -64,6 +94,9 @@ function join() {
 	}).done((res) => {
 		if (res.code == 1) {
 			location.href = "/loginForm";
+		}else{
+			alert(res.msg);
+			history.back;
 		}
 	});
 }
@@ -87,7 +120,7 @@ function checkSame() {
 			if (res.data == false) {
 				alert("중복되는 아이디가 없습니다.");
 				isUsernameSameCheck = true;
-			}else{
+			} else {
 				alert("아이디가 중복됩니다. 다른 아이디를 사용해주십시오.");
 				isUsernameSameCheck = false;
 				$("#username").val("");
@@ -104,7 +137,7 @@ function login() {
 		password: $("#password").val(),
 		remember: $("#remember").prop("checked")
 	};
-	
+
 	$.ajax("/api/login", {
 		type: "POST",
 		dataType: "json", // 응답 데이터
@@ -163,4 +196,92 @@ function update() {
 	});
 }
 
+function joinValidate(){
+	koreanCheck();
+	upperCheck();
+	emailCheck();
+	spaceCheck();
+}
+/*	
+	
+	
 
+	 */
+
+function koreanCheck() {
+	let username = $("#username").val();
+	let password = $("#password").val();
+	let email = $("#email").val();
+
+	var korRule = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+	if (korRule.test(username)) {
+		return true;
+	}
+	
+	if (korRule.test(password)) {
+		return true;
+	}
+
+	if (korRule.test(email)) {
+		return true;
+	}else {
+		return false;
+	}
+}
+
+
+function upperCheck() {
+	let username = $("#username").val();
+	var upperRule = /[A-Z]/;
+	if (upperRule.test(username)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+function emailCheck() {
+	let email = $("#email").val();
+	var emailRule = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+	if (emailRule.test(email)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+
+function spaceCheck() {
+	let username = $("#username").val();
+	let password = $("#password").val();
+	let email = $("#email").val();
+
+	var spaceRule = /[ ]/;
+	if (spaceRule.test(username)) {
+		return true;
+	}
+
+	if (spaceRule.test(password)) {
+		return true;
+	}
+	
+	if (spaceRule.test(email)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+/* function spaceCheck() {
+	let data = {
+	username: $("#username").val(),
+	password: $("#password").val(),
+	email: $("#email").val()
+	};
+	
+	var spaceRule = /[ ]/;
+	
+} */

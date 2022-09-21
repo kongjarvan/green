@@ -16,6 +16,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
 	rel="stylesheet">
 <link href="/css/style.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">

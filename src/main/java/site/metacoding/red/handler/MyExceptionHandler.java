@@ -3,7 +3,6 @@ package site.metacoding.red.handler;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import site.metacoding.red.service.ex.MyException;
 import site.metacoding.red.util.Script;
 import site.metacoding.red.web.dto.response.CMRespDto;
@@ -21,9 +20,4 @@ public class MyExceptionHandler {
 	public @ResponseBody String m1(Exception e){
 		return Script.back(e.getMessage());
 	}
-	
-	
-	
-	
-	
 }
